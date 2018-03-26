@@ -17,7 +17,9 @@ function submit()
     $resp = $recaptcha->verify($gRecaptchaResponse, $remoteIp);
     if ($resp->isSuccess()) {
         echo "Капча пройдена";
+        return true;
     } else {
         echo "Капча НЕ пройдена";
+        return false;
     }
 }

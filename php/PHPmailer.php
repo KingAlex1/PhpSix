@@ -26,8 +26,8 @@ function mailer($mailTo, $subject, $message)
         $mail->Body = "$message";
         $mail->send();
 
-        echo 'Message has been sent';
+        echo "Сообщение отправлено на почту : $mailTo";
     } catch (Exception $e) {
-        echo 'Message could not be sent. Mailer Error: ', $mail->ErrorInfo;
+        echo 'Сообщение не отправлено, ошибка : ', $mail->ErrorInfo;
     }
 }

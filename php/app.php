@@ -4,6 +4,13 @@ include_once('PHPmailer.php');
 include_once('capcha.php');
 
 $data = clearDataBeforeInsert($_POST);
+$checked = submit();
+print_r($checked);
+
+if(!$checked){
+   throw new Exception('Вы не прошли проверку');
+}
+
 $id = authorization(
     $data['email'],
     "SELECT email, id FROM clients ",
@@ -37,7 +44,7 @@ $prepare = pdoQuery("SELECT user_id FROM burgers WHERE user_id = $id");
 $orders = $prepare->fetchAll(PDO::FETCH_ASSOC);
 $numOrders = count($orders);
 
-submit();
+
 
 isset($newId) ? $str = 'Спасибо это Ваш первый заказ' : $str = "Спасибо, это уже $numOrders заказ !!!";
 
@@ -48,11 +55,9 @@ $message = "
   <p>DarkBeefBurger за 500 рублей, 1 шт</p> 
   <p>$str</p>";
 echo $message;
-echo "<p>Ваш заказ отправлен на почту: {$data['email']}</p>";
+mailer($data['email'], $subject, $message);
 echo "<a href=\"/\">Назад</a>";
 
-
-mailer($data['email'], $subject, $message);
 
 file_put_contents('./orders.txt', $message, FILE_APPEND);
 
